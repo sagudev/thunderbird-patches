@@ -1,0 +1,35 @@
+name: Mac
+
+on:
+  workflow_dispatch:
+  push:
+
+  
+env:
+  SCCACHE_GHA_ENABLED: "true"
+  CCACHE: "sccache"
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: init env
+      run: |
+        source 102/102.sh
+        rustup override set $RUST_VER
+        echo "ac_add_options --with-ccache=sccache" >> 102/mozconfig-Mac
+    - name: Use sccache-cache
+      uses: mozilla-actions/sccache-action@v0.0.3
+    - name: build
+      working-directory: ".."
+      run: |
+        cp thunderbird-patches/build/build.sh .
+        echo "Y" | ./build.sh 102
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: mac-102
+        path: "mozilla-esr102/obj-x86_64-apple-darwin/dist/*.mac.dmg"
