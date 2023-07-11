@@ -25,7 +25,9 @@ jobs:
       env:
         MOZILLABUILD: 'C:\mozilla-build'
         PYTHON3: 'C:\mozilla-build\python3\python3.exe'
-      shell: ./thunderbird-patches/mozilla-shell.bat {0}
+        MSYSTEM: MSYS
+        CHERE_INVOKING: D:\\a\\thunderbird-patches
+      shell: C:\\mozilla-build\\usr\\bin\\bash.exe -leo pipefail {0}
       run: |
         cp thunderbird-patches/build/build.sh .
         ./build.sh 102
