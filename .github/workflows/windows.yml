@@ -32,4 +32,4 @@ jobs:
         PYTHON3: 'C:\mozilla-build\python3\python3.exe'
         MSYSTEM: MSYS
         CHERE_INVOKING: 'D:\a\thunderbird-patches'
-      run: C:\mozilla-build\msys2\usr\bin\bash.exe -eo pipefail build.sh 102
+      run: C:\mozilla-build\msys2\usr\bin\bash.exe -eo pipefail -c "echo Y | build.sh 102"
