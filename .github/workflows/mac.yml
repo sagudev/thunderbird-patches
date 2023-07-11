@@ -21,6 +21,7 @@ jobs:
         source 102/102.sh
         rustup override set $RUST_VER
         python3 -m pip install --user mercurial==6.1.4
+        echo $(python3 -m site --user-base) >> $GITHUB_PATH
         echo "ac_add_options --with-ccache=sccache" >> 102/mozconfig-Mac
     - name: Use sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
