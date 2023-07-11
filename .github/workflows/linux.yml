@@ -37,13 +37,13 @@ jobs:
         large-packages: false
         docker-images: true
         swap-storage: false
+    #echo "ac_add_options --with-ccache=sccache" >> ${{ inputs.VERSION }}/mozconfig-Linux
     - name: init env
       run: |
         source ${{ inputs.VERSION }}/${{ inputs.VERSION }}.sh
         rustup override set $RUST_VER
         sudo apt update
         sudo apt install libdbusmenu-glib-dev libdbusmenu-gtk3-dev libdbusmenu-gtk-dev -y
-        echo "ac_add_options --with-ccache=sccache" >> ${{ inputs.VERSION }}/mozconfig-Linux
         echo "ac_add_options --disable-elf-hack"  >> ${{ inputs.VERSION }}/mozconfig-Linux
     - name: Use sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
