@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e # fail on failing commands
+
 if [ "$#" -ne 1 ] && [ "$#" -ne 2 ]; then
   echo "Usage: $0 VERSION [apply|noclobber]" >&2
   exit 1
@@ -34,7 +36,7 @@ cd ..
 DIFF=$(diff -q build-one-off.sh thunderbird-patches/build/build-one-off.sh)
 if [ "|$DIFF|" != "||" ]; then
   echo "Newer version of build script available."
-  echo "Please |cp thunderbird-patches/build/build.sh .| and restart"
+  echo "Please |cp thunderbird-patches/build/build-one-off.sh .| and restart"
   exit 1
 fi
 
@@ -124,9 +126,9 @@ echo
 echo "======================================================="
 echo "Retrieving external patches for Mozilla repo"
 echo "#!/bin/sh" > external.sh
-grep " # " patches/series >> external.sh
+grep " # " patches/series >> external.sh || true
 sed -i -e 's/\/rev\//\/raw-rev\//' external.sh
-sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O patches\/\1/' external.sh
+sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O patches\/\1 || true/' external.sh
 chmod 700 external.sh
 . ./external.sh
 rm external.sh
@@ -136,9 +138,9 @@ echo "======================================================="
 echo "Retrieving external patches for comm repo"
 cd comm
 echo "#!/bin/sh" > external.sh
-grep " # " patches/series >> external.sh
+grep " # " patches/series >> external.sh  || true
 sed -i -e 's/\/rev\//\/raw-rev\//' external.sh
-sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O patches\/\1/' external.sh
+sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O patches\/\1 || true/' external.sh
 chmod 700 external.sh
 . ./external.sh
 rm external.sh

@@ -10,7 +10,7 @@ NOCLOBBER=""
 if [ "$#" -eq 2 ]; then
   if [ "$2" = "apply" ]; then
     APPLY="apply"
-  elif [ "$2" = "noclobber" ]; then
+    elif [ "$2" = "noclobber" ]; then
     NOCLOBBER="noclobber"
   else
     echo "Usage: $0 VERSION [apply|noclobber]" >&2
@@ -84,12 +84,12 @@ else
   echo
   echo "======================================================="
   echo "Cloning $MOZILLA_REPO"
-  hg clone $MOZILLA_REPO
+  hg clone $MOZILLA_REPO || exit 1
   echo
   echo "======================================================="
   echo "Cloning $COMM_REPO"
   cd $MOZILLA_DIR
-  hg clone $COMM_REPO comm
+  hg clone $COMM_REPO comm || exit 1
 fi
 
 if [ "$UNAME" = "Linux" ] || [ "$UNAME" = "Darwin" ]; then
@@ -113,6 +113,9 @@ else
     fi
   fi
 fi
+
+set -e # fail on failing commands
+# this is not at start of file due to grep "mq =" causing exit
 
 echo
 echo "======================================================="
@@ -159,9 +162,9 @@ echo
 echo "======================================================="
 echo "Retrieving external patches for Mozilla repo"
 echo "#!/bin/sh" > external.sh
-grep " # " .hg/patches/series >> external.sh
+grep " # " .hg/patches/series >> external.sh || true
 sed -i -e 's/\/rev\//\/raw-rev\//' external.sh
-sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O .hg\/patches\/\1/' external.sh
+sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O .hg\/patches\/\1 || true/' external.sh
 chmod 700 external.sh
 . ./external.sh
 rm external.sh
@@ -171,9 +174,9 @@ echo "======================================================="
 echo "Retrieving external patches for comm repo"
 cd comm
 echo "#!/bin/sh" > external.sh
-grep " # " .hg/patches/series >> external.sh
+grep " # " .hg/patches/series >> external.sh || true
 sed -i -e 's/\/rev\//\/raw-rev\//' external.sh
-sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O .hg\/patches\/\1/' external.sh
+sed -i -e 's/\(.*\) # \(.*\)/wget -nc \2 -O .hg\/patches\/\1 || true/' external.sh
 chmod 700 external.sh
 . ./external.sh
 rm external.sh
@@ -225,18 +228,18 @@ if [ "$UNAME" = "Linux" ]; then
     echo "======================================================="
     echo "Copying mozconfig-Linux"
     cp ../thunderbird-patches/$VERSION/mozconfig-Linux mozconfig
-  elif [ "$UNAME_ARCH" = "aarch64" ]; then
+    elif [ "$UNAME_ARCH" = "aarch64" ]; then
     echo
     echo "======================================================="
     echo "Copying mozconfig-Linux-aarch64"
     cp ../thunderbird-patches/$VERSION/mozconfig-Linux-aarch64 mozconfig
   fi
-elif [ "$UNAME" = "Darwin" ]; then
+  elif [ "$UNAME" = "Darwin" ]; then
   echo
   echo "======================================================="
   echo "Copying mozconfig-Mac"
   cp ../thunderbird-patches/$VERSION/mozconfig-Mac mozconfig
-elif [ "$UNAME" = "Windows" ]; then
+  elif [ "$UNAME" = "Windows" ]; then
   echo
   echo "======================================================="
   echo "Copying mozconfig for Windows"
@@ -263,12 +266,12 @@ if [ "$NOCLOBBER" = "noclobber" ]; then
   if [ "$UNAME" = "Linux" ]; then
     if [ "$UNAME_ARCH" = "x86_64" ]; then
       touch obj-x86_64-pc-linux-gnu/CLOBBER
-    elif [ "$UNAME_ARCH" = "aarch64" ]; then
+      elif [ "$UNAME_ARCH" = "aarch64" ]; then
       touch obj-aarch64-unknown-linux-gnu/CLOBBER
     fi
-  elif [ "$UNAME" = "Darwin" ]; then
+    elif [ "$UNAME" = "Darwin" ]; then
     touch obj-x86_64-apple-darwin/CLOBBER
-  elif [ "$UNAME" = "Windows" ]; then
+    elif [ "$UNAME" = "Windows" ]; then
     touch obj-x86_64-pc-mingw32/CLOBBER
   fi
 else
@@ -292,18 +295,18 @@ if [ "$UNAME" = "Linux" ]; then
     echo "======================================================="
     echo "Find your archive here"
     ls $MOZILLA_DIR/obj-x86_64-pc-linux-gnu/dist/*.tar.bz2
-  elif [ "$UNAME_ARCH" = "aarch64" ]; then
+    elif [ "$UNAME_ARCH" = "aarch64" ]; then
     echo
     echo "======================================================="
     echo "Find your archive here"
     ls $MOZILLA_DIR/obj-aarch64-unknown-linux-gnu/dist/*.tar.bz2
   fi
-elif [ "$UNAME" = "Darwin" ]; then
+  elif [ "$UNAME" = "Darwin" ]; then
   echo
   echo "======================================================="
   echo "Find you disk image here"
   ls $MOZILLA_DIR/obj-x86_64-apple-darwin/dist/*.mac.dmg
-elif [ "$UNAME" = "Windows" ]; then
+  elif [ "$UNAME" = "Windows" ]; then
   echo
   echo "======================================================="
   echo "Find you disk image here"
