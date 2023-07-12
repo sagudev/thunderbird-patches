@@ -19,15 +19,10 @@ jobs:
         Start-BitsTransfer -Source https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-4.0.2.exe -Destination ./MozillaBuildSetup.exe
         .\MozillaBuildSetup.exe /S | Out-Null
         echo 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Tools\LLVM\bin' | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    - name: set hg
-      shell: cmd
-      run: |
-        echo [extensions] >> %USERPROFILE%\mercurial.ini
-        echo mq = >> %USERPROFILE%\mercurial.ini
-    - name: cp build.sh to working dir
+    - name: cp build-one-off.sh to working dir
       shell: bash
       working-directory: ".."
-      run: cp thunderbird-patches/build/build.sh .
+      run: cp thunderbird-patches/build/build-one-off.sh .
     - name: Build
       working-directory: ".."
       shell: cmd
@@ -38,4 +33,4 @@ jobs:
         MSYSTEM: MSYS
         CHERE_INVOKING: 'enabled_from_arguments'
         MSYS2_PATH_TYPE: 'inherit'
-      run: C:\mozilla-build\msys2\usr\bin\bash.exe -leo pipefail -c "echo Y | ./build.sh 102"
+      run: C:\mozilla-build\msys2\usr\bin\bash.exe -leo pipefail -c "echo Y | ./build-one-off.sh 102"

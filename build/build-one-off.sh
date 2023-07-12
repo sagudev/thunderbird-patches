@@ -12,7 +12,7 @@ NOCLOBBER=""
 if [ "$#" -eq 2 ]; then
   if [ "$2" = "apply" ]; then
     APPLY="apply"
-  elif [ "$2" = "noclobber" ]; then
+    elif [ "$2" = "noclobber" ]; then
     NOCLOBBER="noclobber"
   else
     echo "Usage: $0 VERSION [apply|noclobber]" >&2
@@ -221,18 +221,18 @@ if [ "$UNAME" = "Linux" ]; then
     echo "======================================================="
     echo "Copying mozconfig-Linux"
     cp ../thunderbird-patches/$VERSION/mozconfig-Linux mozconfig
-  elif [ "$UNAME_ARCH" = "aarch64" ]; then
+    elif [ "$UNAME_ARCH" = "aarch64" ]; then
     echo
     echo "======================================================="
     echo "Copying mozconfig-Linux-aarch64"
     cp ../thunderbird-patches/$VERSION/mozconfig-Linux-aarch64 mozconfig
   fi
-elif [ "$UNAME" = "Darwin" ]; then
+  elif [ "$UNAME" = "Darwin" ]; then
   echo
   echo "======================================================="
   echo "Copying mozconfig-Mac"
   cp ../thunderbird-patches/$VERSION/mozconfig-Mac mozconfig
-elif [ "$UNAME" = "Windows" ]; then
+  elif [ "$UNAME" = "Windows" ]; then
   echo
   echo "======================================================="
   echo "Copying mozconfig for Windows"
@@ -277,18 +277,18 @@ if [ "$UNAME" = "Linux" ]; then
     echo "======================================================="
     echo "Find your archive here"
     ls  $MOZILLA_DIR/obj-x86_64-pc-linux-gnu/dist/*.tar.bz2
-  elif [ "$UNAME_ARCH" = "aarch64" ]; then
+    elif [ "$UNAME_ARCH" = "aarch64" ]; then
     echo
     echo "======================================================="
     echo "Find your archive here"
     ls  $MOZILLA_DIR/obj-aarch64-unknown-linux-gnu/dist/*.tar.bz2
   fi
-elif [ "$UNAME" = "Darwin" ]; then
+  elif [ "$UNAME" = "Darwin" ]; then
   echo
   echo "======================================================="
   echo "Find you disk image here"
   ls  $MOZILLA_DIR/obj-x86_64-apple-darwin/dist/*.mac.dmg
-elif [ "$UNAME" = "Windows" ]; then
+  elif [ "$UNAME" = "Windows" ]; then
   echo
   echo "======================================================="
   echo "Find you disk image here"
