@@ -30,7 +30,7 @@ echo
 echo "======================================================="
 echo "Updating Betterbird patches"
 cd thunderbird-patches
-git pull
+git pull || true # Allowed to fail on tagged builds
 cd ..
 
 DIFF=$(diff -q build.sh thunderbird-patches/build/build.sh)
