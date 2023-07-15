@@ -104,6 +104,7 @@ mv "${ARCHIVE%.source.tar.xz}" $MOZILLA_DIR
 
 cd $MOZILLA_DIR
 pwd
+cat toolkit/mozapps/extensions/content/aboutaddons.js
 
 echo
 echo "======================================================="
