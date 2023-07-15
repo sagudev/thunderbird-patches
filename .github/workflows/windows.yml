@@ -22,7 +22,9 @@ jobs:
     - name: cp build-one-off.sh to working dir
       shell: bash
       working-directory: ".."
-      run: cp thunderbird-patches/build/build-one-off.sh .
+      run: |
+        cp thunderbird-patches/build/build-one-off.sh .
+        cp thunderbird-patches/build/build.sh .
     - name: Build
       working-directory: ".."
       shell: cmd
@@ -33,4 +35,4 @@ jobs:
         MSYSTEM: MSYS
         CHERE_INVOKING: 'enabled_from_arguments'
         MSYS2_PATH_TYPE: 'inherit'
-      run: C:\mozilla-build\msys2\usr\bin\bash.exe -leo pipefail -c "echo Y | ./build-one-off.sh 115"
+      run: C:\mozilla-build\msys2\usr\bin\bash.exe -leo pipefail -c "echo Y | ./build.sh 102"
